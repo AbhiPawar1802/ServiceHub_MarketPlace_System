@@ -1,0 +1,19 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: provider-service
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/provider_db
+    username: root
+    password: Pass@123
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+jwt:
+  secret: servicehub-auth-secret-key-256-bit-long!!
