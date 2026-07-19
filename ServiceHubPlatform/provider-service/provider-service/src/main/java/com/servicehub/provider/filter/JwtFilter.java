@@ -28,6 +28,13 @@ public class JwtFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
+        String path = request.getServletPath();
+        System.out.println("Request Path: "+ path);
+        if(path.startsWith("/providers/auto-assign") || path.startsWith("/providers/search")){
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null) {

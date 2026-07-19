@@ -21,6 +21,7 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/providers/search").permitAll()
+                        .requestMatchers("/providers/auto-assign").permitAll()
                         .requestMatchers("/Providers/register").authenticated()
                         .requestMatchers("/providers/pricing/**").authenticated()
 

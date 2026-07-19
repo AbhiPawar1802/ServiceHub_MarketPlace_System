@@ -4,6 +4,7 @@ import com.servicehub.booking_service.POJO.Booking;
 import com.servicehub.booking_service.dto.BookingRequestDto;
 import com.servicehub.booking_service.rest.BookingRest;
 import com.servicehub.booking_service.service.BookingService;
+import com.servicehub.booking_service.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,14 +17,25 @@ public class BookingRestImpl implements BookingRest {
     @Autowired
     private BookingService bookingService;
 
+    @Autowired
+    private JwtUtil jwtUtil;
+
 
     @Override
-    public ResponseEntity<?> createBooking(@RequestBody BookingRequestDto dto) {
+    public ResponseEntity<?> createBooking(String token, @RequestBody BookingRequestDto dto) {
+
+        String jwtToken = token.substring(7);
+        Long userId = jwtUtil.extractUserId(jwtToken);
+        System.out.println("JWT User ID = "+ userId);
         return bookingService.createBooking(dto);
     }
 
     @Override
-    public ResponseEntity<?> getUserBooking(@RequestParam("userId") Long userId) {
+    public ResponseEntity<?> getUserBooking(@RequestHeader("Authorization") String token) {
+        String jwtToken = token.substring(7);
+        Long userId = jwtUtil.extractUserId(jwtToken);
+
+        System.out.println("JWT User ID ="+ userId);
         return bookingService.getUserBooking(userId);
     }
 

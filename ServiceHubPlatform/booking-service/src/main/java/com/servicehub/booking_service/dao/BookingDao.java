@@ -10,4 +10,6 @@ public interface BookingDao extends JpaRepository<Booking, Long> {
     List<Booking> findByUserId(Long userId);
 
     List<Booking> findByProviderId(Long providerId);
+
+    List<Booking> findByUserIdOrderByCreatedAtDesc(Long userId);
 }

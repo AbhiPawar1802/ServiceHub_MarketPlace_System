@@ -17,6 +17,4 @@ public interface BookingService {
     ResponseEntity<?> updateStatus(Long bookingId, String status);
 
     ResponseEntity<?> cancelBooking(Long bookingId);
-
-
 }
