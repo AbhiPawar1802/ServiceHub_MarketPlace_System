@@ -27,7 +27,7 @@ public class BookingRestImpl implements BookingRest {
         String jwtToken = token.substring(7);
         Long userId = jwtUtil.extractUserId(jwtToken);
         System.out.println("JWT User ID = "+ userId);
-        return bookingService.createBooking(dto);
+        return bookingService.createBooking(userId, dto);
     }
 
     @Override

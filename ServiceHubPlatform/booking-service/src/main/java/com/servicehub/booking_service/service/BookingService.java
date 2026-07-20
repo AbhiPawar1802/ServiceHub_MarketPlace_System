@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface BookingService {
 
-    ResponseEntity<?> createBooking(BookingRequestDto dto);
+    ResponseEntity<?> createBooking(Long userId, BookingRequestDto dto);
 
     ResponseEntity<?> getUserBooking(Long userId);
 

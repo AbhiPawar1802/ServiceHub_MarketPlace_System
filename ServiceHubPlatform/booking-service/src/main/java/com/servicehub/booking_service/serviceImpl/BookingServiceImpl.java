@@ -1,7 +1,9 @@
 package com.servicehub.booking_service.serviceImpl;
 
 import com.servicehub.booking_service.POJO.Booking;
+import com.servicehub.booking_service.POJO.BookingHistory;
 import com.servicehub.booking_service.dao.BookingDao;
+import com.servicehub.booking_service.dao.BookingHistoryDao;
 import com.servicehub.booking_service.dto.BookingRequestDto;
 import com.servicehub.booking_service.dto.ProviderServiceResponse;
 import com.servicehub.booking_service.rest.ProviderFeignClientRest;
@@ -26,9 +28,12 @@ public class BookingServiceImpl implements BookingService {
     @Autowired
     private ProviderFeignClientRest providerFeignClientRest;
 
+    @Autowired
+    private BookingHistoryDao bookingHistoryDao;
+
 
     @Override
-    public ResponseEntity<?> createBooking(BookingRequestDto dto) {
+    public ResponseEntity<?> createBooking(Long userId, BookingRequestDto dto) {
         try {
             ProviderServiceResponse providerResponse = providerFeignClientRest.autoAssignProvider(
                     dto.getServiceCategory(),
@@ -41,7 +46,7 @@ public class BookingServiceImpl implements BookingService {
             }
 
             Booking booking = Booking.builder()
-                    .userId(dto.getUserId())
+                    .userId(userId)
                     .providerId(providerResponse.getProviderId())
                     .serviceCategory(dto.getServiceCategory())
                     .latitude(dto.getLatitude())
@@ -88,7 +93,7 @@ public class BookingServiceImpl implements BookingService {
         try {
             Booking booking = bookingDao.findById(bookingId).orElseThrow(() -> new RuntimeException("Booking not found"));
 
-            if (booking.getStatus() == BookingStatus.CANCELLED || booking.getStatus() == BookingStatus.ACCEPTED) {
+            if (booking.getStatus() == BookingStatus.CANCELLED || booking.getStatus() == BookingStatus.COMPLETED) {
                 return new ResponseEntity<>("Booking cannot be updated", HttpStatus.BAD_REQUEST);
             }
 
